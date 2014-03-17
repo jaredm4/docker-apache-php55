@@ -1,11 +1,12 @@
 # Apache & PHP 5.5, without MySQL. No Supervisor needed.
 #
-# VERSION: 1.6
+# VERSION: 1.7
 # DOCKER-VERSION: 0.9.0
 # AUTHOR: Jared Markell <jaredm4@gmail.com>
 # TO_BUILD: docker build -rm -t jaredm4/apache-php55 .
 # TO_RUN: docker run -d -p 80:80 jaredm4/apache-php55
 # CHANGELOG:
+# 1.7 Fix prod.ini loading and enable mcrypt by default
 # 1.6 Added Subversion back in due to Composer needs.
 # 1.5 Added php5-json.
 # 1.4 prod.ini enhancements.
@@ -31,6 +32,12 @@ RUN apt-get update &&\
 
 # PHP prod config
 ADD prod.ini /etc/php5/conf.d/prod.ini
+RUN cd /etc/php5/cli/conf.d && ln -s ../../conf.d/prod.ini prod.ini &&\
+    cd /etc/php5/apache2/conf.d && ln -s ../../conf.d/prod.ini prod.ini
+
+# Fix broken mcrypt in this version of ubuntu
+RUN cd /etc/php5 && mv conf.d/mcrypt.ini mods-available/mcrypt.ini &&\
+    php5enmod mcrypt
 
 # Ensure PHP log file exists and is writable
 RUN touch /var/log/php_errors.log && chmod a+w /var/log/php_errors.log
