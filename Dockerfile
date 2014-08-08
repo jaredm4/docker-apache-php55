@@ -1,10 +1,11 @@
 # Apache & PHP 5.5, without MySQL. No Supervisor needed.
 #
-# VERSION: 1.10
+# VERSION: 1.11
 # DOCKER-VERSION: 1.1.2
 # AUTHOR: Jared Markell <jaredm4@gmail.com>
 # TO_RUN: docker run -d -p 80:80 jaredm4/apache-php55
 # CHANGELOG:
+# 1.11  Disabled expose_php
 # 1.10  No more declared VOLUME for /var/log. If you need to watch logs, use `-v /var/log` on runtime instead.
 # 1.9   Updated to Ubuntu 14.04. Added php5-redis. Removed mcrypt hack.
 # 1.8   Upped upload max size to 10M.
