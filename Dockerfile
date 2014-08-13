@@ -1,10 +1,11 @@
 # Apache & PHP 5.5, without MySQL. No Supervisor needed.
 #
-# VERSION: 1.11
+# VERSION: 1.12
 # DOCKER-VERSION: 1.1.2
 # AUTHOR: Jared Markell <jaredm4@gmail.com>
 # TO_RUN: docker run -d -p 80:80 jaredm4/apache-php55
 # CHANGELOG:
+# 1.12  Fix php_errors.log permissions.
 # 1.11  Disabled expose_php
 # 1.10  No more declared VOLUME for /var/log. If you need to watch logs, use `-v /var/log` on runtime instead.
 # 1.9   Updated to Ubuntu 14.04. Added php5-redis. Removed mcrypt hack.
@@ -43,7 +44,7 @@ RUN cd /etc/php5/cli/conf.d && ln -s ../../conf.d/prod.ini prod.ini &&\
     cd /etc/php5/apache2/conf.d && ln -s ../../conf.d/prod.ini prod.ini
 
 # Ensure PHP log file exists and is writable
-RUN touch /var/log/php_errors.log && chmod +w /var/log/php_errors.log
+RUN touch /var/log/php_errors.log && chmod a+w /var/log/php_errors.log
 
 # Turn on some crucial apache mods
 RUN a2enmod rewrite headers
