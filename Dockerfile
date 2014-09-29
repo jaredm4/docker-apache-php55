@@ -1,10 +1,11 @@
-# Apache & PHP 5.5, without MySQL. No Supervisor needed.
+# Apache & PHP 5.5, without MySQL server. No Supervisor needed. Good for those who host MySQL on separate hosts.
 #
-# VERSION: 1.12
-# DOCKER-VERSION: 1.1.2
+# VERSION: 1.2
+# DOCKER-VERSION: 1.2.0
 # AUTHOR: Jared Markell <jaredm4@gmail.com>
 # TO_RUN: docker run -d -p 80:80 jaredm4/apache-php55
 # CHANGELOG:
+# 1.2   Removed unnecessary apt-get upgrade. Added php5-mongo.
 # 1.12  Fix php_errors.log permissions.
 # 1.11  Disabled expose_php
 # 1.10  No more declared VOLUME for /var/log. If you need to watch logs, use `-v /var/log` on runtime instead.
@@ -34,9 +35,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Utilities and Apache, PHP
 RUN apt-get update &&\
-    apt-get upgrade -y &&\
-    apt-get -y install git subversion curl apache2 php5 php5-cli libapache2-mod-php5 php5-json php5-mysql php-apc php5-gd php5-curl php5-redis php5-memcached php5-mcrypt &&\
-    apt-get clean
+    apt-get -y install git subversion curl apache2 php5 php5-cli libapache2-mod-php5 php5-mysql php-apc php5-gd php5-curl php5-memcached php5-mcrypt php5-mongo php5-sqlite php5-redis php5-json &&\
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
 
 # PHP prod config
 ADD files/prod.ini /etc/php5/conf.d/prod.ini
