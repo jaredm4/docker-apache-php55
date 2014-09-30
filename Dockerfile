@@ -1,10 +1,11 @@
 # Apache & PHP 5.5, without MySQL server. No Supervisor needed. Good for those who host MySQL on separate hosts.
 #
-# VERSION: 1.2.1
+# VERSION: 1.2.2
 # DOCKER-VERSION: 1.2.0
 # AUTHOR: Jared Markell <jaredm4@gmail.com>
 # TO_RUN: docker run -d -p 80:80 jaredm4/apache-php55
 # CHANGELOG:
+# 1.2.2 Ensure /var/lib/php5 is writable (session default path)
 # 1.2.1 Enabled PHP5 Mcrypt
 # 1.2   Removed unnecessary apt-get upgrade. Added php5-mongo.
 # 1.12  Fix php_errors.log permissions.
@@ -42,6 +43,9 @@ RUN apt-get update &&\
 
 # Enable php5-mcrypt (not enabled by default)
 RUN php5enmod mcrypt
+
+# Writable session path (ubuntu 14.04 bug?)
+RUN chmod a+w /var/lib/php5
 
 # PHP prod config
 ADD files/prod.ini /etc/php5/conf.d/prod.ini
